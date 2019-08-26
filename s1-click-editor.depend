@@ -1,4 +1,5 @@
 # depslib dependency file v1.0
-1514144174 source:c:\users\atd\desktop\s1-click-editor\main.cpp
+1566816471 source:c:\users\atd\desktop\s1-click-editor\main.cpp
+	<windows.h>
 	<iostream>
 
