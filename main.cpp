@@ -1,3 +1,4 @@
+#define WINVER 0x0500
 #include <windows.h>
 #include <iostream>
 
@@ -40,12 +41,54 @@ void pasteFromClipboard() {
 	CloseClipboard();
 }
 
+void mouseLeftClick ( )
+{
+  INPUT    Input={0};
+
+  // Press the "Mouse Left" button
+  Input.type      = INPUT_MOUSE;
+  Input.mi.dwFlags  = MOUSEEVENTF_LEFTDOWN;
+  ::SendInput(1,&Input,sizeof(INPUT));
+
+  // Release the "Mouse Left" button
+  ::ZeroMemory(&Input,sizeof(INPUT));
+  Input.type      = INPUT_MOUSE;
+  Input.mi.dwFlags  = MOUSEEVENTF_LEFTUP;
+  ::SendInput(1,&Input,sizeof(INPUT));
+}
+
+simulateKeys() {
+    // input event.
+    INPUT ip;
+
+    // Set up a generic keyboard event.
+    ip.type = INPUT_KEYBOARD;
+    ip.ki.wScan = 0; // hardware scan code for key
+    ip.ki.time = 0;
+    ip.ki.dwExtraInfo = 0;
+    Sleep(200);
+    for (int i = 0; i < 3; i++)
+    {
+        mouseLeftClick();
+    }
+/*
+    // Press the "Enter" key
+    ip.ki.wVk = 0x0D; // virtual-key code for the "Enter" key
+    ip.ki.dwFlags = 0; // 0 for key press
+    SendInput(1, &ip, sizeof(INPUT));
+
+    // Release the "Enter" key
+    ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+    SendInput(1, &ip, sizeof(INPUT));*/
+}
+
 void CheckMouseButtonStatus()
 {
    // Check the mouse left button is pressed or not
    if ((GetKeyState(VK_LBUTTON) & 0x80) != 0)
    {
       cout << "Mouse pressed";
+      simulateKeys();
    }
 }
 
@@ -65,7 +108,6 @@ int main()
     while(1)
     {
         CheckMouseButtonStatus();
-        Sleep(100);
 
         // Check the mouse right button is pressed or not
         if ((GetKeyState(VK_RBUTTON) & 0x80) != 0)
