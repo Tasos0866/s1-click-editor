@@ -1,1 +1,1 @@
-# s1-click-editor
+Download and run s1-click-editor.exe
