@@ -1,6 +1,8 @@
 #define WINVER 0x0500
 #include <windows.h>
 #include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -18,27 +20,37 @@ void copyToClipboard(string text)
 }
 
 void pasteFromClipboard() {
-    if ( !IsClipboardFormatAvailable(CF_TEXT))
-    {
-        return;
-    }
+    // input events.
+    INPUT ip1;
+    INPUT ip2;
 
-	if ( !OpenClipboard(GetDesktopWindow()) )
-    {
-        return;
-	}
+    // Set up a generic keyboard events.
+    ip1.type = INPUT_KEYBOARD;
+    ip1.ki.wScan = 0; // hardware scan code for key
+    ip1.ki.time = 0;
+    ip1.ki.dwExtraInfo = 0;
+    ip2.type = INPUT_KEYBOARD;
+    ip2.ki.wScan = 0; // hardware scan code for key
+    ip2.ki.time = 0;
+    ip2.ki.dwExtraInfo = 0;
 
-	HGLOBAL hg=GetClipboardData(CF_TEXT);
-	if (hg)
-	{
-		LPCSTR strData =(LPCSTR)GlobalLock(hg);
-		if ( strData )
-		{
-      // Your TXT in StrData
-			GlobalUnlock(hg);
-		}
-	}
-	CloseClipboard();
+    // Press the "CTRL" key
+    ip2.ki.wVk = 0x11; // virtual-key code for the "CTRL" key
+    ip2.ki.dwFlags = 0; // 0 for key press
+    SendInput(1, &ip2, sizeof(INPUT));
+
+    // Press the "V" key
+    ip1.ki.wVk = 0x56; // virtual-key code for the "V" key
+    ip1.ki.dwFlags = 0; // 0 for key press
+    SendInput(1, &ip1, sizeof(INPUT));
+
+    // Release the "V" key
+    ip1.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+    SendInput(1, &ip1, sizeof(INPUT));
+
+    // Release the "CTRL" key
+    ip2.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+    SendInput(1, &ip2, sizeof(INPUT));
 }
 
 void mouseLeftClick ( )
@@ -91,7 +103,6 @@ void CheckMouseButtonStatus()
    // Check the mouse left button is pressed or not
    if ((GetKeyState(VK_LBUTTON) & 0x80) != 0)
    {
-      cout << "Mouse pressed";
       simulateKeys();
    }
 }
@@ -105,6 +116,12 @@ int main()
 
     // Copy the string input to clipboard
     copyToClipboard(text);
+Sleep(1000);
+cout << "re";
+    pasteFromClipboard();
+    /*
+    cout << "Right click in order to pause";
+
 
     while(1)
     {
@@ -116,7 +133,7 @@ int main()
             // Go back to the initial state of the program using recursion
             main();
         }
-    }
+    }*/
 
     return 0;
 }
