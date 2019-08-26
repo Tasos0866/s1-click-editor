@@ -67,11 +67,15 @@ simulateKeys() {
     ip.ki.time = 0;
     ip.ki.dwExtraInfo = 0;
     Sleep(200);
+
     for (int i = 0; i < 3; i++)
     {
         mouseLeftClick();
     }
-/*
+
+    // Paste from clipboard
+    pasteFromClipboard();
+
     // Press the "Enter" key
     ip.ki.wVk = 0x0D; // virtual-key code for the "Enter" key
     ip.ki.dwFlags = 0; // 0 for key press
@@ -79,7 +83,7 @@ simulateKeys() {
 
     // Release the "Enter" key
     ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
-    SendInput(1, &ip, sizeof(INPUT));*/
+    SendInput(1, &ip, sizeof(INPUT));
 }
 
 void CheckMouseButtonStatus()
@@ -101,9 +105,6 @@ int main()
 
     // Copy the string input to clipboard
     copyToClipboard(text);
-
-    // Paste from clipboard
-    pasteFromClipboard();
 
     while(1)
     {
