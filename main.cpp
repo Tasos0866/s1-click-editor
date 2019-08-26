@@ -78,7 +78,7 @@ simulateKeys() {
     ip.ki.wScan = 0; // hardware scan code for key
     ip.ki.time = 0;
     ip.ki.dwExtraInfo = 0;
-    Sleep(200);
+    Sleep(85);
 
     for (int i = 0; i < 3; i++)
     {
@@ -116,11 +116,7 @@ int main()
 
     // Copy the string input to clipboard
     copyToClipboard(text);
-Sleep(1000);
-cout << "re";
-    pasteFromClipboard();
-    /*
-    cout << "Right click in order to pause";
+    cout << "Right click in order to pause" << endl;
 
 
     while(1)
@@ -133,7 +129,7 @@ cout << "re";
             // Go back to the initial state of the program using recursion
             main();
         }
-    }*/
+    }
 
     return 0;
 }
